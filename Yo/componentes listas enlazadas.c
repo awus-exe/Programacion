@@ -34,6 +34,7 @@ void EliminarNodoxDato(tPtr*,int);
 void ModificarNodoxDato(tPtr*,int);
 tPtr GenerarNuevaListaxDato(tPtr,int);
 void DepurarListaxDato(tPtr*,int);
+void EliminarRepetidosxDato(tPtr*);
 void MostrarLista(tPtr);
 
 int main(void) {
@@ -243,12 +244,39 @@ void DepurarListaxDato(tPtr* ini,int Dato){
 	act=*ini;
 	while(act!=NULL){
 		if(act->registro.dato==Dato){
-			
+			if(ant==NULL)
+				*ini=act->sig;
+			else
+				ant->sig=act->sig;
+			act->sig=NULL;
+			free(act);
 		}
 		else{
 			ant=act;
 			act=act->sig;
 		}
+	}
+}
+void EliminarRepetidosxDato(tPtr* ini){
+	tPtr ant,act,sig;
+	ant=NULL;
+	act=*ini;
+	sig=NULL;
+	while(act!=NULL){
+		ant=act;
+		sig=act->sig;
+		while(sig!=NULL){
+			if(act->registro.dato==sig->registro.dato){
+				ant->sig=sig->sig;
+				free(sig);
+				sig=ant->sig;
+			}
+			else{
+				ant=sig;
+				sig=sig->sig;
+			}
+		}
+		act=act->sig;
 	}
 }
 void MostrarLista(tPtr P){
