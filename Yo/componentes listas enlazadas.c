@@ -244,12 +244,16 @@ void DepurarListaxDato(tPtr* ini,int Dato){
 	act=*ini;
 	while(act!=NULL){
 		if(act->registro.dato==Dato){
-			if(ant==NULL)
+			if(ant==NULL){
 				*ini=act->sig;
-			else
+				free(act);
+				act=*ini;
+			}
+			else{
 				ant->sig=act->sig;
-			act->sig=NULL;
-			free(act);
+				free(act);
+				act=ant->sig;
+			}
 		}
 		else{
 			ant=act;
@@ -258,10 +262,9 @@ void DepurarListaxDato(tPtr* ini,int Dato){
 	}
 }
 void EliminarRepetidosxDato(tPtr* ini){
-	tPtr ant,act,sig;
-	ant=NULL;
-	act=*ini;
-	sig=NULL;
+	tPtr ant=NULL;
+	tPtr act=*ini;
+	tPtr sig=NULL;
 	while(act!=NULL){
 		ant=act;
 		sig=act->sig;
